@@ -8,6 +8,7 @@ const UserModel = require('../models/User.model');
 
 const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is loggedIn
 
+// /api/signup
 router.post('/signup', (req, res) => {
     const {username, email, password } = req.body;
     console.log(username, email, password);
@@ -45,6 +46,7 @@ router.post('/signup', (req, res) => {
           .then((passwordHash) => {
             UserModel.create({email, username, passwordHash})
               .then((user) => {
+                console.log("userCreated")
                 user.passwordHash = "***";
                 req.session.loggedInUser = user;
                 console.log(req.session)
