@@ -4,29 +4,37 @@ const { Schema } = mongoose;
 
 const FeedSchema = new Schema({
   createdby: {
-      type: Schema.Types.ObjectId,
-      ref: 'user'
+    type: Schema.Types.ObjectId,
+    ref: 'user'
 
   },
- 
+
   comments: [{
-    type: String,
-      
+    comment: {
+      type: String,
+
+    },
+    createdby:
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
   }],
   description: {
     type: String,
-      
-  },
-
-  likesCounter: {
-    type: Number,
 
   },
- 
+
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'user'
+
+  }],
+
 },
-{
-  timestamps: true
-}
+  {
+    timestamps: true
+  }
 );
 
 module.exports = mongoose.model('Feed', FeedSchema);

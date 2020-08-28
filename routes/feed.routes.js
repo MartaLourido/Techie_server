@@ -9,96 +9,131 @@ const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is
 
 //Get the feed  //Funciona
 router.get('/feed', (req, res) => {
-  FeedModel.find()
-       .then((feed) => {
-            res.status(200).json(feed)
-       })
-       .catch((err) => {
-            res.status(500).json({
-                 error: 'Something went wrong, try again',
-                 message: err
-            })
-  })         
+     FeedModel.find()
+          .then((feed) => {
+               res.status(200).json(feed)
+          })
+          .catch((err) => {
+               res.status(500).json({
+                    error: 'Something went wrong, try again',
+                    message: err
+               })
+          })
 })
 
 //create a post in the feed  //Funciona
 
-router.post('/feed/create', isLoggedIn, (req, res) => {  
-  const {description} = req.body;
-  const createdby = req.session.loggedInUser._id;
-  console.log(req.body)
-  FeedModel.create({createdby, description})
-        .then((response) => {
-             res.status(200).json(response)
-        })
-        .catch((err) => {
-             res.status(500).json({
-                  error: 'Something went wrong, try again',
-                  message: err
-             })
-        })  
+router.post('/feed/create', isLoggedIn, (req, res) => {
+     const { description } = req.body;
+     const createdby = req.session.loggedInUser._id;
+     console.log(req.body)
+     FeedModel.create({ createdby, description })
+          .then((response) => {
+               res.status(201).json(response)
+          })
+          .catch((err) => {
+               res.status(500).json({
+                    error: 'Something went wrong, try again',
+                    message: err
+               })
+          })
 })
 
-//find by id for do the edit and the delete
+//find by id for do the edit and the delete /Funciona
 
-router.get('/feed/:postId',  isLoggedIn, (req, res) => {
-  FeedModel.findById(req.params.myId)
-   .then((response) => {
-        res.status(200).json(response)
-   })
-   .catch((err) => {
-        res.status(500).json({
-             error: 'Something went wrong, try again',
-             message: err
-        })
-   }) 
+router.get('/feed/:postId', isLoggedIn, (req, res) => {
+     FeedModel.findById(req.params.myId)
+          .then((response) => {
+               res.status(200).json(response)
+          })
+          .catch((err) => {
+               res.status(500).json({
+                    error: 'Something went wrong, try again',
+                    message: err
+               })
+          })
 })
 
-// Edit a post with put route 
+// Edit a post with put route //Funciona
 
-router.put('/feed/:postId/edit', isLoggedIn, (req, res) =>{
-
-  FeedModel.findByIdAndUpdate(req.params.postId)
-    .then(() => {
-      res.json({ message: `Your post is updated successfully.` });
-    })
-    .catch(err => {
-      res.json(err);
-    })
+router.put('/feed/:postId/edit', isLoggedIn, (req, res) => {
+     const { description } = req.body;
+     FeedModel.findByIdAndUpdate(req.params.postId, {
+          description: description,
+     })
+          .then(() => {
+               res.status(200).json(
+                    { message: `Your post is updated successfully.` });
+          })
+          .catch(err => {
+               res.json(err);
+          })
 })
 
-// Delete a post
+// Delete a post //funciona
 
-router.delete('/feed/:postId', isLoggedIn, (req, res) => {
-  FeedModel.findByIdAndDelete(req.params.id)
-        .then((response) => {
-             res.status(200).json(response)
-        })
-        .catch((err) => {
-             res.status(500).json({
-                  error: 'Something went wrong, try again',
-                  message: err
-             })
-        })  
+router.delete('/feed/:postId/delete', isLoggedIn, (req, res) => {
+     FeedModel.findByIdAndDelete(req.params.id)
+          .then((response) => {
+               res.status(202).json({ message: `Your post is deleted successfully.` });
+          })
+          .catch((err) => {
+               res.status(500).json({
+                    error: 'Something went wrong, try again',
+                    message: err
+               })
+          })
 })
 
-//Add a comment
+//Add a like and update //Funciona pero pendiente validar en el frontend que si ya tiene like no se le deje dar like otra vez
 
-router.post('/feed/:userId', isLoggedIn, (req, res) => {
-  let id = req.params.id
-  const {name, textComment} = req.body;
-  FeedModel.findByIdAndUpdate(id, {$set: {name: name, textComment: textComment}})
-        .then((response) => {
-             res.status(200).json(response)
-        })
-        .catch((err) => {
-             console.log(err)
-             res.status(500).json({
-                  error: 'Something went wrong, try again',
-                  message: err
-             })
-        }) 
+router.put('/feed/:postId/addlike', isLoggedIn, (req, res) => {
+     const likeUser = req.session.loggedInUser._id;
+     FeedModel.findByIdAndUpdate(req.params.postId, {
+          $push: { "likes": likeUser }
+     })
+          .then(() => {
+               res.status(200).json(
+                    { message: `Your post is updated successfully.` });
+          })
+          .catch(err => {
+               res.json(err);
+          })
 })
+
+
+//Add comment //Funciona
+
+router.put('/feed/:postId/addcomment', isLoggedIn, (req, res) => {
+     const { comment } = req.body;
+     const createdby = req.session.loggedInUser._id;
+     FeedModel.findByIdAndUpdate(req.params.postId,  {
+          $push: { "comments": {comment:comment, createdby: createdby } }
+     })
+          .then(() => {
+               res.status(200).json(
+                    { message: `Your comment have been added successfully.` });
+          })
+          .catch(err => {
+               res.json(err);
+          })
+})
+
+// router.post('/feed/:userId', isLoggedIn, (req, res) => {
+//   let id = req.params.id
+//   const {name, textComment} = req.body;
+//   FeedModel.findByIdAndUpdate(id, {$set: {name: name, textComment: textComment}})
+//         .then((response) => {
+//              res.status(200).json(response)
+//         })
+//         .catch((err) => {
+//              console.log(err)
+//              res.status(500).json({
+//                   error: 'Something went wrong, try again',
+//                   message: err
+//              })
+//         }) 
+// })
 
 //router add a like would be here
 

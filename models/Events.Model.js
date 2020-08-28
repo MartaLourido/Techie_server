@@ -16,7 +16,7 @@ const EventSchema = new Schema({
 
   NumberOfPeople:  [{
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'number'
   }],
 
   Date: {
