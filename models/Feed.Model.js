@@ -20,15 +20,15 @@ const PostSchema = new Schema({
   },
   likesCounter: {
     type: Number,
-    required: true
+  
   },
   textComment: {
     type: String,
-    required: true
+ 
   },
   timestamp: {
     type: Number,
-    required: true
+
   }
 });
 

@@ -4,7 +4,7 @@ const router = express.Router()
 //we installed bcrypt.js
 const bcrypt = require('bcryptjs');
 
-const UserModel = require('../models/User.model');
+const UserModel = require('../models/User.Model');
 
 const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is loggedIn
 
@@ -132,12 +132,23 @@ router.post('/signin', (req, res) => {
       });
   
 });
- 
-router.post('/logout', (req, res) => {
-    req.session.destroy();
-    res
+
+
+//logout de antes 
+// router.post('/logout', (req, res) => {
+//     req.session.destroy();
+//     res
+//     .status(204) //  No Content
+//     .send();
+// })
+//Log out
+
+router.get('/signout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/')
     .status(204) //  No Content
     .send();
+  })
 })
 
 router.get("/user", isLoggedIn, (req, res, next) => {
