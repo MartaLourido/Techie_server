@@ -30,20 +30,23 @@ router.post('/signup', (req, res) => {
         return;  
     }
 
-    const myPassRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
-    if (!myPassRegex.test(password)) {
-      res.status(500)
-          .json({
-            errorMessage: 'Password needs to have 8 characters, a number and an Uppercase alphabet'
-          });
-        return;  
-    }
+    //const myPassRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/);
+    //const myPassRegex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)
+    // if (!myPassRegex.test(password)) {
+    //   console.log("password regex not passing")
+    //   res.status(500)
+    //       .json({
+    //         errorMessage: 'Password needs to have 8 characters, a number and an Uppercase alphabet'
+    //       });
+    //     return;  
+    // }
 
     bcrypt.genSalt(12)
       .then((salt) => {
         console.log('Salt: ', salt);
         bcrypt.hash(password, salt)
           .then((passwordHash) => {
+            console.log("before model.create")
             UserModel.create({email, username, passwordHash})
               .then((user) => {
                 console.log("userCreated")
@@ -53,6 +56,7 @@ router.post('/signup', (req, res) => {
                 res.status(200).json(user);
               })
               .catch((err) => {
+                console.log(err)
                 if (err.code === 11000) {
                   res.status(500)
                   .json({
