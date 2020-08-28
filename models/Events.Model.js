@@ -2,32 +2,23 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const EventsSchema = new Schema({
-  createdby: {
-    type: String,
-    required: true
-  },
+const EventSchema = new Schema({
+    createdby: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+  
+    },
  
-  comments: {
-    type: [
-      {
-        userId: String,
-        text: String,
-        timestamp: Number
-      }
-    ],
-    required: true
-  },
-  NumberOfPeople: {
-    type: [
-      {
-        userId: String,
-        text: String,
-        timestamp: Number
-      }
-    ],
-    required: true
-  },
+    comments: [{
+      type: String,
+        
+    }],
+
+  NumberOfPeople:  [{
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+  }],
+
   Date: {
     type: Number,
     required: true
@@ -36,24 +27,19 @@ const EventsSchema = new Schema({
     type: String,
     required: true
   },
-  Topics: {
-    type: [
-      {
-        information: String,
-        text: String,
-        timestamp: Number
-      }
-    ],
-    required: true
-  },
+  Topics: [{
+    type: String
+  }],
   Place: {
     type: String,
     required: true
+ 
   },
-  timestamp: {
-    type: Number,
-    required: true
-  }
-});
+ 
+},
+{
+  timestamps: true
+}
+);
 
-module.exports = mongoose.model('Events', EventsSchema);
+module.exports = mongoose.model('Event', EventSchema);
