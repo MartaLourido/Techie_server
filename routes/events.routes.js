@@ -24,13 +24,15 @@ router.get('/events', (req, res) => {
 //create a new event
 
 router.post('/event/create', isLoggedIn, (req, res) => {  
-  const {createdby, textComment, comments, date, place, topics, numberOfPeople} = req.body;
-  console.log(req.body)
-  EventModel.create({createdby, textComment, comments, date, place, topics, numberOfPeople})
-        .then((response) => {
+  const {name, date, place, topics, numberOfPeople, image, city} = req.body;
+  const createdby = req.session.loggedInUser._id
+  console.log(createdby)
+  EventModel.create({createdby:createdby, name: name, date: date, place: place, topics: topics, numberOfPeople: numberOfPeople, image: image, city: city})
+          .then((response) => {
              res.status(200).json(response)
         })
         .catch((err) => {
+             console.log(err)
              res.status(500).json({
                   error: 'Something went wrong',
                   message: err

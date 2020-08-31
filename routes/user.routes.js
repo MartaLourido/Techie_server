@@ -33,8 +33,8 @@ router.put('/user/edit', isLoggedIn, (req, res, next)=>{
   //   res.status(400).json({ message: 'Specified id is not valid' });
   //   return;
   // }
- 
-  User.findByIdAndUpdate(req.session.loggedInUser._id, req.body)
+  const {username, email, userAvatar, city} = req.body
+  User.findByIdAndUpdate(req.session.loggedInUser._id, {$set: {username:username, email:email, userAvatar:userAvatar, city:city}})
     .then(() => {
       res.json({ message: `User ${req.session.loggedInUser.username} is updated successfully.` });
     })
@@ -42,6 +42,8 @@ router.put('/user/edit', isLoggedIn, (req, res, next)=>{
       res.json(err);
     })
 })
+
+
 
 // Delete profile
 
