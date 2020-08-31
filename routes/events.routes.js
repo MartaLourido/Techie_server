@@ -41,7 +41,7 @@ router.post('/event/create', isLoggedIn, (req, res) => {
 //find by id for do the edit and the delete
 
 router.get('/event/:eventId',  isLoggedIn, (req, res) => {
-  EventModel.findById(req.params.myId)
+  EventModel.findById(req.params.id)
    .then((response) => {
         res.status(200).json(response)
    })
@@ -53,7 +53,7 @@ router.get('/event/:eventId',  isLoggedIn, (req, res) => {
    }) 
 })
 
-// Edit a post with put route 
+// Edit a event with put route 
 
 router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
 
@@ -66,7 +66,7 @@ router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
     })
 })
 
-// Delete a post
+// Delete a event
 
 router.delete('/event/:eventId', isLoggedIn, (req, res) => {
   EventModel.findByIdAndDelete(req.params.id)
@@ -100,5 +100,6 @@ router.patch('/event/:eventId', isLoggedIn, (req, res) => {
 })
 
 //router for attend this event or not?
+//router for search? 
 
 module.exports = router;

@@ -8,12 +8,14 @@ const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is
 
 
 //Get a user by id para ver mi usuario
+//con req session loggedInuser ya tengo el id del usuario 
 router.get('/user', isLoggedIn, (req, res) => {
-  User.findById(req.params.userId)
+  User.findById(req.session.loggedInUser._id)
     .then((user) => {
       console.log(user)
-      req.profile = user; // 
-      res.status(200).json({ user })
+      // req.profile = user; //
+      user.passwordHash = "******"
+      res.status(200).json( user )
     })
     .catch(() => {
       res.status(500).json({

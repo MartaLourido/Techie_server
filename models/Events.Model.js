@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const EventSchema = new Schema({
+    name: {
+      type: String,
+    },
     createdby: {
         type: Schema.Types.ObjectId,
         ref: 'user'
@@ -19,7 +22,7 @@ const EventSchema = new Schema({
       ref: 'number'
   }],
 
-  Date: {
+  place: {
     type: Number,
     required: true
   },
@@ -30,7 +33,7 @@ const EventSchema = new Schema({
   Topics: [{
     type: String
   }],
-  Place: {
+  city: {
     type: String,
     required: true
  

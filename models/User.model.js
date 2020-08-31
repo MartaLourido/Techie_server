@@ -18,6 +18,11 @@ const userSchema = new Schema(
       type: String,
     
     },
+    city: {
+      type: String,
+
+   
+    },
   },
   {
     timestamps: true

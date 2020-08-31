@@ -106,6 +106,7 @@ router.post('/signin', (req, res) => {
                   req.session.loggedInUser = userData;
                   console.log('Signin', req.session)
                   res.status(200).json(userData)
+                  // res.redirect('/user')
                 }
                 //if passwords do not match
                 else {
@@ -135,21 +136,20 @@ router.post('/signin', (req, res) => {
 
 
 //logout de antes 
+router.post('/logout', (req, res) => {
+    req.session.destroy();
+    res
+    .status(204) //  No Content
+    .send();
+})
+
+
 // router.post('/logout', (req, res) => {
-//     req.session.destroy();
-//     res
+//   req.session.destroy()
+//     // res.redirect('/SignIn')
 //     .status(204) //  No Content
 //     .send();
 // })
-//Log out
-
-router.get('/signout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/')
-    .status(204) //  No Content
-    .send();
-  })
-})
 
 router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);

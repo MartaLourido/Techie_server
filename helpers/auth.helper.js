@@ -1,4 +1,5 @@
 const isLoggedIn = (req, res, next) => {
+    
   console.log('Middleware', req.session)  
   if (req.session.loggedInUser) {
       //calls whatever is to be executed after the isLoggedIn function is over
