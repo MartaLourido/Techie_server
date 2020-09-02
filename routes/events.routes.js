@@ -61,16 +61,16 @@ router.get('/event/:eventId',  isLoggedIn, (req, res) => {
 
 // Edit a event with put route 
 
-// router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
-
-//   EventModel.findByIdAndUpdate(req.params.eventId)
-//     .then(() => {
-//       res.json({ message: `Your event is updated successfully.` });
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     })
-// })
+router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
+     const {name, topics, image, city} = req.body;
+  EventModel.findByIdAndUpdate(req.params.eventId, {name: name, topics: topics, image: image, city: city})
+    .then(() => {
+      res.json({ message: `Your event is updated successfully.` });
+    })
+    .catch(err => {
+      res.json(err);
+    })
+})
 
 
 
