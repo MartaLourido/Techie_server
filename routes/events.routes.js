@@ -24,10 +24,10 @@ router.get('/events', (req, res) => {
 //create a new event
 
 router.post('/event/create', isLoggedIn, (req, res) => {  
-  const {name, date, place, topics, numberOfPeople, image, city} = req.body;
+  const {name, date, place, topics, numberOfPeople, image, city, information} = req.body;
   const createdby = req.session.loggedInUser._id
   console.log(createdby)
-  EventModel.create({createdby:createdby, name: name, date: date, place: place, topics: topics, numberOfPeople: numberOfPeople, image: image, city: city})
+  EventModel.create({createdby:createdby, name: name, date: date, place: place, topics: topics, numberOfPeople: numberOfPeople, image: image, city: city, information: information})
           .then((response) => {
              res.status(200).json(response)
         })
@@ -40,14 +40,18 @@ router.post('/event/create', isLoggedIn, (req, res) => {
         })  
 })
 
-//find by id for do the edit and the delete
+//find by id for do the edit and the delete, with populate for get the name who create the event in the frontend
 
 router.get('/event/:eventId',  isLoggedIn, (req, res) => {
-  EventModel.findById(req.params.id)
+  EventModel.findById(req.params.eventId)
+  .populate("createdby")
    .then((response) => {
+        response.createdby.passwordHash = "***"
+        console.log(response)
         res.status(200).json(response)
    })
    .catch((err) => {
+        console.log(err)
         res.status(500).json({
              error: 'Something went wrong, try again',
              message: err
@@ -57,16 +61,18 @@ router.get('/event/:eventId',  isLoggedIn, (req, res) => {
 
 // Edit a event with put route 
 
-router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
+// router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
 
-  EventModel.findByIdAndUpdate(req.params.eventId)
-    .then(() => {
-      res.json({ message: `Your event is updated successfully.` });
-    })
-    .catch(err => {
-      res.json(err);
-    })
-})
+//   EventModel.findByIdAndUpdate(req.params.eventId)
+//     .then(() => {
+//       res.json({ message: `Your event is updated successfully.` });
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     })
+// })
+
+
 
 // Delete a event
 
@@ -101,7 +107,6 @@ router.patch('/event/:eventId', isLoggedIn, (req, res) => {
         }) 
 })
 
-//router for attend this event or not?
-//router for search? 
+
 
 module.exports = router;

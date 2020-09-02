@@ -8,7 +8,7 @@ const EventSchema = new Schema({
   },
   createdby: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
 
   },
 
@@ -38,6 +38,9 @@ const EventSchema = new Schema({
 
   },
   topics: {
+    type: String
+  },
+  information: {
     type: String
   },
   city: {

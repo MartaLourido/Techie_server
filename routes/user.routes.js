@@ -9,10 +9,10 @@ const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is
 
 //Get a user by id para ver mi usuario
 //con req session loggedInuser ya tengo el id del usuario 
-router.get('/user', isLoggedIn, (req, res) => {
+router.get('/profile', isLoggedIn, (req, res) => {
   User.findById(req.session.loggedInUser._id)
     .then((user) => {
-      console.log(user)
+      console.log("ROUTE /user", user)
       // req.profile = user; //
       user.passwordHash = "******"
       res.status(200).json( user )
@@ -27,14 +27,15 @@ router.get('/user', isLoggedIn, (req, res) => {
 
 // Edit profile with put route 
 
-router.put('/user/edit', isLoggedIn, (req, res, next)=>{
+router.put('/profile/edit', isLoggedIn, (req, res, next)=>{
  
   // if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
   //   res.status(400).json({ message: 'Specified id is not valid' });
   //   return;
   // }
+  console.log("inside put route", req.body)
   const {username, email, userAvatar, city} = req.body
-  User.findByIdAndUpdate(req.session.loggedInUser._id, {$set: {username:username, email:email, userAvatar:userAvatar, city:city}})
+  User.findByIdAndUpdate(req.session.loggedInUser._id, {username, email, userAvatar, city})
     .then(() => {
       res.json({ message: `User ${req.session.loggedInUser.username} is updated successfully.` });
     })
@@ -47,7 +48,7 @@ router.put('/user/edit', isLoggedIn, (req, res, next)=>{
 
 // Delete profile
 
-router.delete('/user/delete', isLoggedIn, (req, res) => {
+router.delete('/profile/delete', isLoggedIn, (req, res) => {
   User.findByIdAndDelete(req.session.loggedInUser._id)
     .then((response) => {
       res.status(200).json(response)

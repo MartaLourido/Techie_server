@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const FeedSchema = new Schema({
   createdby: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
 
   },
 
@@ -17,7 +17,7 @@ const FeedSchema = new Schema({
     createdby:
     {
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'User'
     }
   }],
   description: {

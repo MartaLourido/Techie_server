@@ -10,10 +10,22 @@ const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is
 //Get the feed  //Funciona
 router.get('/feed', (req, res) => {
      FeedModel.find()
+     .populate("createdby")
+     .populate({
+          path: "comments",
+          populate: "createdby"
+     })
           .then((feed) => {
-               res.status(200).json(feed)
+               console.log(feed[0].comments)
+               let newFeed = feed.map(e => {
+                    let newElem = JSON.parse(JSON.stringify(e))
+                    newElem.passwordHash = "***"
+                    return newElem
+               })
+               res.status(200).json(newFeed)
           })
           .catch((err) => {
+               console.log(err)
                res.status(500).json({
                     error: 'Something went wrong, try again',
                     message: err
@@ -39,11 +51,13 @@ router.post('/feed/create', isLoggedIn, (req, res) => {
           })
 })
 
-//find by id for do the edit and the delete /Funciona
+//find by id for do the edit and the delete /Funciona //using populate to dont show the password and show the createdby
 
 router.get('/feed/:postId', isLoggedIn, (req, res) => {
-     FeedModel.findById(req.params.myId)
+     FeedModel.findById(req.params.postId)
+     .populate("createdby")
           .then((response) => {
+               response.createdby.passwordHash = "***"
                res.status(200).json(response)
           })
           .catch((err) => {
@@ -53,6 +67,8 @@ router.get('/feed/:postId', isLoggedIn, (req, res) => {
                })
           })
 })
+
+
 
 // Edit a post with put route //Funciona
 
