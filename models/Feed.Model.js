@@ -8,6 +8,11 @@ const FeedSchema = new Schema({
     ref: 'User'
 
   },
+  // userAvatar: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User'
+
+  // },
 
   comments: [{
     comment: {

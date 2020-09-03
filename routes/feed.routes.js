@@ -10,10 +10,12 @@ const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is
 //Get the feed  //Funciona
 router.get('/feed', (req, res) => {
      FeedModel.find()
+     .sort([["createdAt", -1]])
      .populate("createdby")
      .populate({
           path: "comments",
           populate: "createdby"
+
      })
           .then((feed) => {
                console.log(feed[0].comments)

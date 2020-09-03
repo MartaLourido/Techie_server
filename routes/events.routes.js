@@ -76,8 +76,8 @@ router.put('/event/:eventId/edit', isLoggedIn, (req, res) =>{
 
 // Delete a event
 
-router.delete('/event/:eventId', isLoggedIn, (req, res) => {
-  EventModel.findByIdAndDelete(req.params.id)
+router.delete('/event/:eventId/delete', isLoggedIn, (req, res) => {
+  EventModel.findByIdAndDelete(req.params.eventId)
         .then((response) => {
              res.status(200).json(response)
         })
