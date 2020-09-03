@@ -45,7 +45,7 @@ app.use(
 
 app.use(cors({
   credentials: true, 
-  origin: [process.env.PUBLIC_DOMAIN]
+  origin: ['http://localhost:3000', 'https://techie-project.herokuapp.com']
 }))
 
 // Middleware Setup
@@ -88,7 +88,10 @@ app.use('/api', feedRoutes);
 const eventsRoutes = require('./routes/events.routes')
 app.use('/api', eventsRoutes);
 
-
-
+// ROUTE FOR SERVING REACT APP (index.html)
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 module.exports = app;
