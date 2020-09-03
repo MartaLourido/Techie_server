@@ -45,7 +45,7 @@ app.use(
 
 app.use(cors({
   credentials: true, 
-  origin: [process.env.API_URI]
+  origin: [process.env.PUBLIC_DOMAIN]
 }))
 
 // Middleware Setup
