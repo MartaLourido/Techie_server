@@ -4,7 +4,7 @@ const router = express.Router()
 //we installed bcrypt.js
 const bcrypt = require('bcryptjs');
 
-const UserModel = require('../models/User.Model');
+const UserModel = require('../models/User.model');
 
 const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is loggedIn
 

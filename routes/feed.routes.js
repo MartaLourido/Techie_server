@@ -3,7 +3,7 @@ const router = express.Router();
 const bcryptjs = require('bcryptjs')
 
 //const for require user model
-const FeedModel = require("../models/Feed.Model");
+const FeedModel = require("../models/Feed.model");
 const { isLoggedIn } = require('../helpers/auth.helper'); // to check if user is loggedIn
 
 
