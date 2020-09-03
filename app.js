@@ -25,7 +25,7 @@ mongoose
 //const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 app.use(
     session({
-      secret: 'my-secret-weapon',
+      secret: process.env.SECRET_SESSION,
       saveUninitialized: true,
       resave: true,
       cookie: {
