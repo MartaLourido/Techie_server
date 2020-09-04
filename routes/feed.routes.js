@@ -38,10 +38,10 @@ router.get('/feed', (req, res) => {
 //create a post in the feed  //Funciona
 
 router.post('/feed/create', isLoggedIn, (req, res) => {
-     const { description } = req.body;
+     const { description, typeComment } = req.body; //description son los comments del panel comment
      const createdby = req.session.loggedInUser._id;
      console.log(req.body)
-     FeedModel.create({ createdby, description })
+     FeedModel.create({ createdby, description, typeComment })
           .then((response) => {
                res.status(201).json(response)
           })

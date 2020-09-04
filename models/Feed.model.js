@@ -29,6 +29,10 @@ const FeedSchema = new Schema({
     type: String,
 
   },
+  typeComment: {
+    type: String,
+
+  },
 
   likes: [{
     type: Schema.Types.ObjectId,
